@@ -1,9 +1,12 @@
 import { GetStaticProps } from 'next'
+import Image from 'next/image'
 import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
 import { api } from '../services/api'
 import convertDurationToTimeString from '../utils/convertDurationToTimeString'
+
+import styles from './home.module.scss'
 
 type RawEpisode = {
   id: string
@@ -32,15 +35,46 @@ type Episode = {
 }
 
 type HomeProps = {
-  episodes: Episode[]
+  latestEpisodes: [Episode, Episode]
+  allEpisodes: Episode[]
 }
 
-const Home = (props: HomeProps) => {
+const Home = ({ latestEpisodes, allEpisodes }: HomeProps) => {
   return (
-    <>
-      <h1>Index</h1>
-      <p>{JSON.stringify(props.episodes)}</p>
-    </>
+    <div className={styles.homepage}>
+      <section className={styles.latestEpisodes}>
+        <h2>Últimos lançamentos</h2>
+
+        <ul>
+          {latestEpisodes.map(episode => (
+            <li key={episode.id}>
+              <Image
+                width={192}
+                height={192}
+                src={episode.thumbnail}
+                alt={episode.title}
+                objectFit="cover"
+              />
+
+              <div className={styles.episodeDetails}>
+                <a href="">{episode.title}</a>
+                <p>{episode.members}</p>
+                <span>{episode.publishedAt}</span>
+                <span>{episode.durationAsString}</span>
+              </div>
+
+              <button type="button">
+                <img src="/play-green.svg" alt="Tocar episódio" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className={styles.allEpisodes}>
+        <h2>Todos os episódios</h2>
+      </section>
+    </div>
   )
 }
 
@@ -55,9 +89,13 @@ const getStaticProps: GetStaticProps = async () => {
 
   const episodes = data.map(formatEpisode)
 
+  const latestEpisodes = episodes.slice(0, 2)
+  const allEpisodes = episodes.slice(2, episodes.length)
+
   return {
     props: {
-      episodes,
+      latestEpisodes,
+      allEpisodes,
     },
     // tempo para refazer a requisição (em segundos)
     revalidate: 8 * 60 * 60,
