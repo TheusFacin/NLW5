@@ -1,43 +1,16 @@
 import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { format, parseISO } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
 
 import { api } from '../services/api'
-import convertDurationToTimeString from '../utils/convertDurationToTimeString'
+import { EpisodeType, RawEpisode } from '../types/episode'
+import formatEpisode from '../utils/formatEpisode'
 
 import styles from './home.module.scss'
 
-type RawEpisode = {
-  id: string
-  title: string
-  members: string
-  published_at: string
-  thumbnail: string
-  description: string
-  file: {
-    url: string
-    type: string
-    duration: number
-  }
-}
-
-type Episode = {
-  id: string
-  title: string
-  thumbnail: string
-  members: string
-  publishedAt: string
-  duration: number
-  durationAsString: string
-  description: string
-  url: string
-}
-
 type HomeProps = {
-  latestEpisodes: [Episode, Episode]
-  allEpisodes: Episode[]
+  latestEpisodes: [EpisodeType, EpisodeType]
+  allEpisodes: EpisodeType[]
 }
 
 const Home = ({ latestEpisodes, allEpisodes }: HomeProps) => {
@@ -146,20 +119,6 @@ const getStaticProps: GetStaticProps = async () => {
     revalidate: 8 * 60 * 60,
   }
 }
-
-const formatEpisode = (episode: RawEpisode): Episode => ({
-  id: episode.id,
-  title: episode.title,
-  thumbnail: episode.thumbnail,
-  members: episode.members,
-  publishedAt: format(parseISO(episode.published_at), 'd MMM yy', {
-    locale: ptBR,
-  }),
-  duration: Number(episode.file.duration),
-  durationAsString: convertDurationToTimeString(Number(episode.file.duration)),
-  description: episode.description,
-  url: episode.file.url,
-})
 
 export default Home
 export { getStaticProps }
