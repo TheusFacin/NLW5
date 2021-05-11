@@ -73,6 +73,44 @@ const Home = ({ latestEpisodes, allEpisodes }: HomeProps) => {
 
       <section className={styles.allEpisodes}>
         <h2>Todos os episódios</h2>
+
+        <table cellSpacing={0}>
+          <thead>
+            <th></th>
+            <th>Título</th>
+            <th>Integrantes</th>
+            <th>Data</th>
+            <th>Duração</th>
+            <th></th>
+          </thead>
+
+          <tbody>
+            {allEpisodes.map(episode => (
+              <tr key={episode.id}>
+                <td>
+                  <Image
+                    width={120}
+                    height={120}
+                    src={episode.thumbnail}
+                    alt={episode.title}
+                    objectFit="cover"
+                  />
+                </td>
+                <td>
+                  <a href="">{episode.title}</a>
+                </td>
+                <td>{episode.members}</td>
+                <td>{episode.publishedAt}</td>
+                <td>{episode.durationAsString}</td>
+                <td>
+                  <button type="button">
+                    <img src="/play-green.svg" alt="Tocar Episódio" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </section>
     </div>
   )
