@@ -109,6 +109,8 @@
     border: 0;
     font-size: 0;
 
+    position: relative;
+
     transition: filter 0.2s;
 
     &:disabled {
@@ -118,6 +120,18 @@
 
     &:hover:not(:disabled) {
       filter: brightness(0.8);
+    }
+
+    &.isActive::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+      border-radius: 5px;
+      background: var(--green-500);
     }
 
     &.playButton {

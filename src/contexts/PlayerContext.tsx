@@ -12,11 +12,13 @@ type PlayerContextData = {
   episodeList: Episode[]
   currentEpisodeIndex: number
   isPlaying: boolean
+  isLooping: boolean
   play: (episode: Episode) => void
   playList: (list: Episode[], index: number) => void
   playNext: () => void
   playPrevious: () => void
   togglePlayPause: () => void
+  toggleLoop: () => void
   setPlayingState: (state: boolean) => void
   hasNext: boolean
   hasPrevious: boolean
@@ -30,6 +32,7 @@ const PlayerContextProvider: React.FC = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [hasNext, setHasNext] = useState(false)
   const [hasPrevious, sethasPrevious] = useState(false)
+  const [isLooping, setIsLooping] = useState(false)
 
   useEffect(() => {
     setHasNext(currentEpisodeIndex + 1 < episodeList.length)
@@ -50,6 +53,11 @@ const PlayerContextProvider: React.FC = ({ children }) => {
 
   const togglePlayPause = () => {
     setIsPlaying(prev => !prev)
+  }
+
+  const toggleLoop = () => {
+    console.log('loop')
+    setIsLooping(prev => !prev)
   }
 
   const setPlayingState = (state: boolean) => {
@@ -74,11 +82,13 @@ const PlayerContextProvider: React.FC = ({ children }) => {
         episodeList,
         currentEpisodeIndex,
         isPlaying,
+        isLooping,
         play,
         playList,
         playNext,
         playPrevious,
         togglePlayPause,
+        toggleLoop,
         setPlayingState,
         hasNext,
         hasPrevious,
