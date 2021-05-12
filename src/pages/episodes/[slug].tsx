@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
+// import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -13,6 +14,11 @@ type EpisodeProps = {
 }
 
 const Episode = ({ episode }: EpisodeProps) => {
+  // const router = useRouter()
+
+  // se a página ainda estiver carregando (precisa no fallback: true)
+  // if (router.isFallback) return <p>Carregando...</p>
+
   return (
     <div className={styles.episodeContainer}>
       <div className={styles.episode}>
@@ -52,13 +58,42 @@ const Episode = ({ episode }: EpisodeProps) => {
   )
 }
 
+// definição para o next gerar páginas dinâmicas de forma
+// estáticas a partir dos seus endereços
 const getStaticPaths: GetStaticPaths = async () => {
+  // em um e-comerce por exemplo, podemos colocar no paths as
+  // categorias e os produtos mais acessados, e deixar os outros
+  // para serem gerados quando acessados por algum cliente
+
+  // para exemplificar, vamos pegar dois episódios
+  const { data } = (await api.get('/episodes', {
+    params: {
+      _limit: 2,
+      _sort: 'published_at',
+      _order: 'desc',
+    },
+  })) as { data: RawEpisode[] }
+
+  const paths = data.map(episode => ({ params: { slug: episode.id } }))
+
   return {
-    paths: [],
+    // quando passamos o paths vazio, o next não vai gerar
+    // nenhum episódio de forma estática.
+    // ao passarmos os paths, o next vai gerar os episódios
+    // descritos estaticamente na build.
+    /* paths: [], */
+    paths,
+    // define o comportamento quando uma página não estática,
+    // ou seja, que não foi definido no path, for acessada.
+    // false - 404
+    // true - tenta buscar os dados, pelo lado do client, e criar a página de forma estática
+    // 'blocking' - igual ao true, porém pelo lado do server (melhor opção para SEO)
     fallback: 'blocking',
   }
 }
 
+// Precisamos buscar os dados na api, mas isso precisa ser
+// feito de forma estática, para o next criar a página
 const getStaticProps: GetStaticProps = async ctx => {
   const { slug } = ctx.params // ctx = context
 
@@ -67,9 +102,11 @@ const getStaticProps: GetStaticProps = async ctx => {
   const episode = formatEpisode(data)
 
   return {
+    // as props do componente
     props: {
       episode,
     },
+    // o tempo, em segundos, do intervalo entre as consultas
     revalidate: 24 * 60 * 60, // 24 horas
   }
 }
