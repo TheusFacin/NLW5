@@ -20,7 +20,7 @@ const Episode = ({ episode }: EpisodeProps) => {
   // se a página ainda estiver carregando (precisa no fallback: true)
   // if (router.isFallback) return <p>Carregando...</p>
 
-  const {} = usePlayer()
+  const { play } = usePlayer()
 
   return (
     <div className={styles.episodeContainer}>
@@ -40,7 +40,7 @@ const Episode = ({ episode }: EpisodeProps) => {
             objectFit="cover"
           />
 
-          <button type="button">
+          <button type="button" onClick={() => play(episode)}>
             <img src="/play.svg" alt="Tocar episódio" />
           </button>
         </div>
