@@ -9,14 +9,33 @@ import '../styles/global.scss'
 const MyApp = ({ Component, pageProps }) => {
   const [episodeList, setEpisodeList] = useState<Episode[]>([])
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   const play = (episode: Episode) => {
     setEpisodeList([episode])
     setCurrentEpisodeIndex(0)
+    setIsPlaying(true)
+  }
+
+  const togglePlayPause = () => {
+    setIsPlaying(prev => !prev)
+  }
+
+  const setPlayingState = (state: boolean) => {
+    setIsPlaying(state)
   }
 
   return (
-    <PlayerContext.Provider value={{ episodeList, currentEpisodeIndex, play }}>
+    <PlayerContext.Provider
+      value={{
+        episodeList,
+        currentEpisodeIndex,
+        isPlaying,
+        play,
+        togglePlayPause,
+        setPlayingState,
+      }}
+    >
       <div className={styles.wrapper}>
         <main>
           <Header />

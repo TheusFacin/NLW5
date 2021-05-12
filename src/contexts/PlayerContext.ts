@@ -11,7 +11,10 @@ type Episode = {
 type PlayerContextData = {
   episodeList: Episode[]
   currentEpisodeIndex: number
+  isPlaying: boolean
   play: (episode: Episode) => void
+  togglePlayPause: () => void
+  setPlayingState: (state: boolean) => void
 }
 
 const PlayerContext = createContext({} as PlayerContextData)
