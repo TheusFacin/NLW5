@@ -15,8 +15,10 @@ const Player = () => {
     currentEpisodeIndex,
     isPlaying,
     isLooping,
+    isShuffling,
     togglePlayPause,
     toggleLoop,
+    toggleShuffle,
     setPlayingState,
     playNext,
     playPrevious,
@@ -90,7 +92,12 @@ const Player = () => {
         )}
 
         <div className={styles.buttons}>
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            disabled={!episode || episodeList.length === 1}
+            className={isShuffling ? styles.isActive : ''}
+            onClick={toggleShuffle}
+          >
             <img src="/shuffle.svg" alt="Ordem aleatória" />
           </button>
 
@@ -118,7 +125,7 @@ const Player = () => {
           <button
             type="button"
             onClick={playNext}
-            disabled={!episode || !hasNext}
+            disabled={!isShuffling && (!episode || !hasNext)}
           >
             <img src="/play-next.svg" alt="Próximo" />
           </button>
