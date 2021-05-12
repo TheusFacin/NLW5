@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useContext } from 'react'
-import PlayerContext from '../contexts/PlayerContext'
+import { PlayerContext } from '../contexts/PlayerContext'
 
 import { api } from '../services/api'
 import { EpisodeType, RawEpisode } from '../types/episode'
