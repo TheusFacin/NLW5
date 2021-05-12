@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
+import Head from 'next/head'
 // import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -24,6 +25,10 @@ const Episode = ({ episode }: EpisodeProps) => {
 
   return (
     <div className={styles.episodeContainer}>
+      <Head>
+        <title>Podcastr | {episode.title}</title>
+      </Head>
+
       <div className={styles.episode}>
         <div className={styles.thumbnailContainer}>
           <Link href="/">

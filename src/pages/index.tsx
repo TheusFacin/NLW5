@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next'
 import Image from 'next/image'
+import Head from 'next/head'
 import Link from 'next/link'
 
 import usePlayer from '../contexts/PlayerContext'
@@ -22,6 +23,10 @@ const Home = ({ latestEpisodes, allEpisodes }: HomeProps) => {
 
   return (
     <div className={styles.homepage}>
+      <Head>
+        <title>Podcastr | Home</title>
+      </Head>
+
       <section className={styles.latestEpisodes}>
         <h2>Últimos lançamentos</h2>
 
