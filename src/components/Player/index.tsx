@@ -25,6 +25,7 @@ const Player = () => {
     setPlayingState,
     playNext,
     playPrevious,
+    clearPlayer,
     hasNext,
     hasPrevious,
   } = usePlayer()
@@ -47,6 +48,11 @@ const Player = () => {
   const handleSliderMove = (amount: number) => {
     audioRef.current.currentTime = amount
     setProgress(amount)
+  }
+
+  const handleEpisodeEnded = () => {
+    if (hasNext) playNext()
+    else clearPlayer()
   }
 
   const episode = episodeList[currentEpisodeIndex]
@@ -107,6 +113,7 @@ const Player = () => {
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
             onLoadedMetadata={setupProgressListener}
+            onEnded={handleEpisodeEnded}
             loop={isLooping}
           />
         )}
@@ -145,7 +152,7 @@ const Player = () => {
           <button
             type="button"
             onClick={playNext}
-            disabled={!isShuffling && (!episode || !hasNext)}
+            disabled={!episode || !hasNext}
           >
             <img src="/play-next.svg" alt="Próximo" />
           </button>

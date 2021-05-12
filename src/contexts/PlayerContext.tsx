@@ -22,6 +22,7 @@ type PlayerContextData = {
   toggleLoop: () => void
   toggleShuffle: () => void
   setPlayingState: (state: boolean) => void
+  clearPlayer: () => void
   hasNext: boolean
   hasPrevious: boolean
 }
@@ -38,9 +39,9 @@ const PlayerContextProvider: React.FC = ({ children }) => {
   const [isShuffling, setIsShuffling] = useState(false)
 
   useEffect(() => {
-    setHasNext(currentEpisodeIndex + 1 < episodeList.length)
+    setHasNext(isShuffling || currentEpisodeIndex + 1 < episodeList.length)
     sethasPrevious(currentEpisodeIndex > 0)
-  }, [episodeList, currentEpisodeIndex])
+  }, [episodeList, currentEpisodeIndex, isShuffling])
 
   const play = (episode: Episode) => {
     setEpisodeList([episode])
@@ -69,6 +70,11 @@ const PlayerContextProvider: React.FC = ({ children }) => {
 
   const setPlayingState = (state: boolean) => {
     setIsPlaying(state)
+  }
+
+  const clearPlayer = () => {
+    setEpisodeList([])
+    setCurrentEpisodeIndex(0)
   }
 
   const playNext = () => {
@@ -107,6 +113,7 @@ const PlayerContextProvider: React.FC = ({ children }) => {
         toggleLoop,
         toggleShuffle,
         setPlayingState,
+        clearPlayer,
         hasNext,
         hasPrevious,
       }}
