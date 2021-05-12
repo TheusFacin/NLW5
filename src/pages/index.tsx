@@ -87,7 +87,7 @@ const Home = ({ latestEpisodes, allEpisodes }: HomeProps) => {
                 <td>{episode.publishedAt}</td>
                 <td>{episode.durationAsString}</td>
                 <td>
-                  <button type="button">
+                  <button type="button" onClick={() => player.play(episode)}>
                     <img src="/play-green.svg" alt="Tocar Episódio" />
                   </button>
                 </td>
