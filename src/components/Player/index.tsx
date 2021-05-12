@@ -16,6 +16,10 @@ const Player = () => {
     isPlaying,
     togglePlayPause,
     setPlayingState,
+    playNext,
+    playPrevious,
+    hasNext,
+    hasPrevious,
   } = useContext(PlayerContext)
 
   useEffect(() => {
@@ -86,7 +90,12 @@ const Player = () => {
           <button type="button" disabled={!episode}>
             <img src="/shuffle.svg" alt="Ordem aleatória" />
           </button>
-          <button type="button" disabled={!episode}>
+
+          <button
+            type="button"
+            onClick={playPrevious}
+            disabled={!episode || !hasPrevious}
+          >
             <img src="/play-previous.svg" alt="Anterior" />
           </button>
 
@@ -103,9 +112,14 @@ const Player = () => {
             )}
           </button>
 
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            onClick={playNext}
+            disabled={!episode || !hasNext}
+          >
             <img src="/play-next.svg" alt="Próximo" />
           </button>
+
           <button type="button" disabled={!episode}>
             <img src="/repeat.svg" alt="Repetir" />
           </button>
