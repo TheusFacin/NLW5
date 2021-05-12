@@ -1,9 +1,8 @@
-import { useContext } from 'react'
 import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { PlayerContext } from '../contexts/PlayerContext'
+import usePlayer from '../contexts/PlayerContext'
 
 import { api } from '../services/api'
 import { EpisodeType, RawEpisode } from '../types/episode'
@@ -17,7 +16,7 @@ type HomeProps = {
 }
 
 const Home = ({ latestEpisodes, allEpisodes }: HomeProps) => {
-  const player = useContext(PlayerContext)
+  const player = usePlayer()
 
   const episodeList = [...latestEpisodes, ...allEpisodes]
 

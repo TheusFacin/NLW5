@@ -3,6 +3,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import usePlayer from '../../contexts/PlayerContext'
 import { api } from '../../services/api'
 import { EpisodeType, RawEpisode } from '../../types/episode'
 import formatEpisode from '../../utils/formatEpisode'
@@ -18,6 +19,8 @@ const Episode = ({ episode }: EpisodeProps) => {
 
   // se a página ainda estiver carregando (precisa no fallback: true)
   // if (router.isFallback) return <p>Carregando...</p>
+
+  const {} = usePlayer()
 
   return (
     <div className={styles.episodeContainer}>
