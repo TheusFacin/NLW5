@@ -44,6 +44,11 @@ const Player = () => {
     })
   }
 
+  const handleSliderMove = (amount: number) => {
+    audioRef.current.currentTime = amount
+    setProgress(amount)
+  }
+
   const episode = episodeList[currentEpisodeIndex]
 
   return (
@@ -82,6 +87,9 @@ const Player = () => {
                 trackStyle={{ backgroundColor: '#04d361' }}
                 railStyle={{ backgroundColor: '#9f75ff' }}
                 handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
+                max={episode.duration}
+                value={progress}
+                onChange={handleSliderMove}
               />
             ) : (
               <div className={styles.emptySlider} />
